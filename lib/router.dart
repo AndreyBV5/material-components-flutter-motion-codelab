@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:reply/custom_transition_page.dart';
 import 'package:reply/home.dart';
 import 'package:reply/search_page.dart';
-
+import 'package:animations/animations.dart';
 import 'model/router_provider.dart';
 
 const String _homePageLocation = '/reply/home';
@@ -52,7 +52,7 @@ class ReplyRouterDelegate extends RouterDelegate<ReplyRoutePath>
                 screen: HomePage(),
               ),
               if (routePath is ReplySearchPath)
-                const CustomTransitionPage(
+                const SharedAxisTransitionPageWrapper(
                   transitionKey: ValueKey('Search'),
                   screen: SearchPage(),
                 ),
@@ -93,6 +93,34 @@ class ReplyHomePath extends ReplyRoutePath {
 
 class ReplySearchPath extends ReplyRoutePath {
   const ReplySearchPath();
+}
+
+// TODO: Add Shared Z-Axis transition from search icon to search view page (Motion)
+class SharedAxisTransitionPageWrapper extends Page {
+  const SharedAxisTransitionPageWrapper(
+      {required this.screen, required this.transitionKey})
+      : super(key: transitionKey);
+
+  final Widget screen;
+  final ValueKey transitionKey;
+
+  @override
+  Route createRoute(BuildContext context) {
+    return PageRouteBuilder(
+        settings: this,
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return SharedAxisTransition(
+            fillColor: Theme.of(context).cardColor,
+            animation: animation,
+            secondaryAnimation: secondaryAnimation,
+            transitionType: SharedAxisTransitionType.scaled,
+            child: child,
+          );
+        },
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return screen;
+        });
+  }
 }
 
 // TODO: Add Shared Z-Axis transition from search icon to search view page (Motion)
