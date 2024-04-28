@@ -730,45 +730,44 @@ class _ReplyFabState extends State<_ReplyFab>
               );
         final tooltip = onMailView ? 'Reply' : 'Compose';
 
-        
         // TODO: Add Container Transform from FAB to compose email page (Motion)
-return OpenContainer(
- openBuilder: (context, closedContainer) {
-   return const ComposePage();
- },
- openColor: theme.cardColor,
- onClosed: (success) {
-   Provider.of<EmailStore>(
-     context,
-     listen: false,
-   ).onCompose = false;
- },
- closedShape: circleFabBorder,
- closedColor: theme.colorScheme.secondary,
- closedElevation: 6,
- closedBuilder: (context, openContainer) {
-   return Tooltip(
-     message: tooltip,
-     child: InkWell(
-       customBorder: circleFabBorder,
-       onTap: () {
-         Provider.of<EmailStore>(
-           context,
-           listen: false,
-         ).onCompose = true;
-         openContainer();
-       },
-       child: SizedBox(
-         height: _mobileFabDimension,
-         width: _mobileFabDimension,
-         child: Center(
-           child: fabSwitcher,
-         ),
-       ),
-     ),
-   );
- },
-);
+        return OpenContainer(
+          openBuilder: (context, closedContainer) {
+            return const ComposePage();
+          },
+          openColor: theme.cardColor,
+          onClosed: (success) {
+            Provider.of<EmailStore>(
+              context,
+              listen: false,
+            ).onCompose = false;
+          },
+          closedShape: circleFabBorder,
+          closedColor: theme.colorScheme.secondary,
+          closedElevation: 6,
+          closedBuilder: (context, openContainer) {
+            return Tooltip(
+              message: tooltip,
+              child: InkWell(
+                customBorder: circleFabBorder,
+                onTap: () {
+                  Provider.of<EmailStore>(
+                    context,
+                    listen: false,
+                  ).onCompose = true;
+                  openContainer();
+                },
+                child: SizedBox(
+                  height: _mobileFabDimension,
+                  width: _mobileFabDimension,
+                  child: Center(
+                    child: fabSwitcher,
+                  ),
+                ),
+              ),
+            );
+          },
+        );
       },
     );
   }
